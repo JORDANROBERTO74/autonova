@@ -1,36 +1,38 @@
 # AutoNova
 
-Catálogo automotriz front-end con Next.js 15: modelos, fichas técnicas, cotización por WhatsApp y panel de administración con datos locales.
+Automotive catalog front-end built with Next.js 15: vehicle models, spec sheets, WhatsApp quoting and an admin panel backed by local browser data.
 
-**Implementación de portafolio, no un producto listo para producción.** No tiene backend, pagos, inventario real ni autenticación de servidor.
+**Portfolio implementation, not production-ready.** It has no backend, payments, real inventory or server authentication.
 
-![Home de AutoNova con el titular "El siguiente modelo ya está en piso", una SUV blanca y los modelos destacados](docs/screenshot.webp)
+The product UI and vehicle copy are in Spanish; the engineering surface is in English.
 
-**Sitio publicado:** <https://autonova-orcin.vercel.app/>
+![AutoNova home page with the headline "El siguiente modelo ya está en piso", a white SUV and the featured models](docs/screenshot.webp)
 
-## Qué es
+**Live site:** <https://autonova-orcin.vercel.app/>
 
-AutoNova cubre el flujo completo de un catálogo de agencia:
+## What it is
 
-- Home con hero, destacados y categorías.
-- Catálogo con filtros por categoría.
-- Detalle con galería, ficha técnica, variantes y colores.
-- Cotización por WhatsApp con modelo, variante y color en el mensaje.
-- Panel de administración con login local, dashboard y CRUD de vehículos.
+AutoNova covers the full flow of a dealership catalog:
 
-No hay carrito ni checkout: la conversión termina en una conversación por WhatsApp.
+- Home with a hero, featured vehicles and categories.
+- Catalog with category filters.
+- Detail page with gallery, spec sheet, variants and colors.
+- WhatsApp quote with model, variant and color in the message.
+- Admin panel with local login, dashboard and vehicle CRUD.
 
-## Por qué este proyecto
+There is no cart or checkout: the conversion ends in a WhatsApp conversation.
 
-- **Cotización, no checkout.** El CTA abre WhatsApp con el modelo y la configuración elegida. No hay carrito que abandonar.
-- **Panel completo sin backend.** Login local, dashboard, CRUD, persistencia y restauración del catálogo en `localStorage`.
-- **Imágenes locales con variantes responsive.** Fotos en `400/800/1200/1600` y `srcset`; sin requests a un CDN en runtime.
-- **Stack mínimo.** Next.js 15, TypeScript estricto, Tailwind y primitivas de shadcn/ui. Sin Supabase ni Server Actions.
-- **Qué no es.** No procesa pagos, no guarda datos en un servidor, no tiene email, inventario real ni autenticación de servidor. Si necesitas una tienda con checkout o un admin multiusuario, este proyecto no es la base.
+## Why this project
 
-## Empezar
+- **Quote, not checkout.** The CTA opens WhatsApp with the selected model and configuration. There is no cart to abandon.
+- **Full admin without a backend.** Local login, dashboard, CRUD, persistence and catalog restore in `localStorage`.
+- **Local responsive images.** Photos at `400/800/1200/1600` with `srcset`; no runtime CDN requests.
+- **Minimal stack.** Next.js 15, strict TypeScript, Tailwind and shadcn/ui primitives. No Supabase, no Server Actions.
+- **What it is not.** It does not process payments, store data on a server, send email, manage real inventory or provide server authentication. If you need a store with checkout or a multiuser admin, this project is not the base.
 
-Requisitos: Node.js 24 (ver `.nvmrc`) y pnpm 11. El proyecto declara Node >=20 en `package.json`; la verificación se hizo con Node 24.3 y pnpm 11.17.
+## Getting started
+
+Requirements: Node.js 24 (see `.nvmrc`) and pnpm 11. The project declares Node >=20 in `package.json`; verification used Node 24.3 and pnpm 11.17.
 
 ```bash
 git clone https://github.com/JORDANROBERTO74/autonova.git
@@ -39,88 +41,88 @@ pnpm install
 pnpm dev
 ```
 
-Abre <http://localhost:3000>. Las variables de entorno son opcionales para desarrollo: los valores por defecto permiten levantar el catálogo y el panel.
+Open <http://localhost:3000>. Environment variables are optional for development: the defaults run the catalog and the admin panel.
 
-| Comando | Qué hace |
+| Command | What it does |
 | --- | --- |
-| `pnpm dev` | Servidor de desarrollo en el puerto 3000 |
-| `pnpm build` | Build de producción + typecheck |
-| `pnpm start` | Sirve el build de producción |
-| `pnpm lint` | ESLint |
-| `pnpm test` | Tests con Vitest |
+| `pnpm dev` | Start the development server on port 3000 |
+| `pnpm build` | Create the production build and typecheck |
+| `pnpm start` | Serve the production build |
+| `pnpm lint` | Run ESLint |
+| `pnpm test` | Run the Vitest suite |
 
-## Rutas
+## Routes
 
-| Ruta | Descripción |
+| Route | Description |
 | --- | --- |
-| `/` | Home con hero, destacados y categorías |
-| `/models` | Catálogo con filtros por categoría |
-| `/models/[slug]` | Galería, ficha técnica, variantes y colores |
-| `/nosotros` | Página de agencia |
-| `/contacto` | Showroom y contacto |
-| `/admin` | Entrada del panel; redirige a login o dashboard |
-| `/admin/login` | Acceso con las credenciales configuradas |
-| `/admin/dashboard` | Resumen del catálogo |
-| `/admin/vehicles` | CRUD de vehículos |
-| `/admin/vehicles/new` | Crear modelo |
-| `/admin/vehicles/[id]/edit` | Editar modelo |
+| `/` | Home with hero, featured vehicles and categories |
+| `/models` | Catalog with category filters |
+| `/models/[slug]` | Gallery, spec sheet, variants and colors |
+| `/nosotros` | About the dealership |
+| `/contacto` | Showroom and contact |
+| `/admin` | Admin entry; redirects to login or dashboard |
+| `/admin/login` | Access with the configured credentials |
+| `/admin/dashboard` | Catalog summary |
+| `/admin/vehicles` | Vehicle CRUD |
+| `/admin/vehicles/new` | Create a model |
+| `/admin/vehicles/[id]/edit` | Edit a model |
 
-## Panel de administración
+## Admin panel
 
-- `/admin` es la única entrada. No hay enlaces al panel en el sitio público.
-- La sesión vive en `localStorage` (`autonova.admin.session.v1`) y expira a las 8 horas.
-- Credenciales por defecto: `admin@autonova.mx` / `autonova2026`; se cambian en `.env.local`.
-- El dashboard muestra total de modelos, categorías, precio promedio y valor del inventario.
-- El CRUD permite crear, editar, eliminar y restaurar el catálogo.
+- `/admin` is the only entry point. There are no links to the panel on the public site.
+- The session lives in `localStorage` (`autonova.admin.session.v1`) and expires after 8 hours.
+- Default credentials: `admin@autonova.mx` / `autonova2026`; change them in `.env.local`.
+- The dashboard shows total models, categories, average price and inventory value.
+- The CRUD allows creating, editing, deleting and restoring the catalog.
 
-**Importante:** las credenciales usan `NEXT_PUBLIC_*` y la sesión se guarda en `localStorage`. Es un control de acceso de interfaz, no autenticación real: las credenciales son visibles en el bundle y la sesión puede crearse manualmente. Para producción hace falta auth de servidor con cookie `httpOnly`.
+**Important:** credentials use `NEXT_PUBLIC_*` and the session is stored in `localStorage`. This is a UI access gate, not real authentication: credentials are visible in the bundle and the session can be created manually. Production needs server authentication with an `httpOnly` cookie.
 
-## Variables de entorno
+## Environment variables
 
-Copia [.env.example](.env.example) a `.env.local` si quieres cambiar los valores por defecto:
+Copy [.env.example](.env.example) to `.env.local` if you want to change the defaults:
 
-| Variable | Uso |
+| Variable | Purpose |
 | --- | --- |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Número de WhatsApp, solo dígitos. Por defecto `5215500000000`; cámbialo antes de publicar. |
-| `NEXT_PUBLIC_SITE_URL` | Origen público para metadatos. Por defecto `http://localhost:3000`. |
-| `NEXT_PUBLIC_ADMIN_EMAIL` | Correo del panel. Por defecto `admin@autonova.mx`. |
-| `NEXT_PUBLIC_ADMIN_PASSWORD` | Password del panel. Por defecto `autonova2026`. |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | WhatsApp number, digits only. Defaults to `5215500000000`; change it before publishing. |
+| `NEXT_PUBLIC_SITE_URL` | Public origin for metadata. Defaults to `http://localhost:3000`. |
+| `NEXT_PUBLIC_ADMIN_EMAIL` | Admin email. Defaults to `admin@autonova.mx`. |
+| `NEXT_PUBLIC_ADMIN_PASSWORD` | Admin password. Defaults to `autonova2026`. |
 
-## Arquitectura
+## Architecture
 
 ```text
 src/
-  app/(site)/              home, catálogo, detalle, nosotros y contacto
-  app/admin/               login, dashboard y CRUD
-  components/              site, vehicles, admin y primitivas ui
-  lib/                     datos, auth local, WhatsApp y utilidades
-  lib/mock/vehicles.ts     seed de 8 vehículos
-public/vehicles/           fotos y variantes responsive
-docs/screenshot.webp       captura usada en este README
+  app/(site)/              home, catalog, detail, about and contact
+  app/admin/               login, dashboard and CRUD
+  components/              site, vehicles, admin and ui primitives
+  lib/                     data, local auth, WhatsApp and utilities
+  lib/mock/vehicles.ts     8 seed vehicles
+public/vehicles/           photos and responsive variants
+docs/screenshot.webp       screenshot used in this README
 ```
 
-- `src/components/vehicles/vehicles-provider.tsx`: estado del catálogo en cliente; hidrata y persiste en `autonova.vehicles.v1`.
-- `src/lib/admin-auth.ts`: sesión local de 8 horas.
-- `src/lib/vehicles.ts`: tipos, schema Zod, especificaciones y conteos.
-- `src/lib/whatsapp.ts`: único constructor de enlaces `wa.me` y mensajes de cotización.
-- `src/components/admin/vehicle-form.tsx`: alta y edición validadas con Zod.
+- `src/components/vehicles/vehicles-provider.tsx`: catalog state on the client; hydrates and persists to `autonova.vehicles.v1`.
+- `src/lib/admin-auth.ts`: local 8-hour admin session.
+- `src/lib/vehicles.ts`: types, Zod schema, specs and category counts.
+- `src/lib/whatsapp.ts`: the only builder for `wa.me` links and quote messages.
+- `src/components/admin/vehicle-form.tsx`: create and edit form validated with Zod.
 
-## Estado y alcance
+## Status and scope
 
-- Pieza de portafolio; sin releases ni CI. Última verificación: noviembre 2026.
-- Implementación funcional en front-end; no lista para producción.
-- Datos y precios ficticios.
-- Sin backend, pagos, email, inventario real ni uploads: las imágenes se agregan por URL.
-- El panel es local por navegador; no hay cuentas multiusuario ni datos compartidos.
+- Portfolio piece; no CI or releases. Last verification: November 2026.
+- Functional front-end implementation; not production-ready.
+- Data and prices are fictional.
+- No backend, payments, email, real inventory or uploads: images are added by URL.
+- The admin panel is local to the browser; no multiuser accounts or shared data.
 
-## Verificación
+## Verification
 
 - `pnpm lint` ✅
-- `pnpm test` ✅ (13 tests)
+- `pnpm test` ✅ (14 tests)
 - `pnpm build` ✅
-- Instalación limpia desde el clon: `pnpm install --frozen-lockfile` + `pnpm build` ✅
-- Probado en Node 24.3 y pnpm 11.17. Última verificación manual: noviembre 2026.
+- Clean install from the clone: `pnpm install --frozen-lockfile` + `pnpm build` ✅
+- Tested on Node 24.3 and pnpm 11.17. Last manual verification: November 2026.
 
-## Licencia
+## License
 
-MIT para el código. Las fotos de `public/vehicles` son de Unsplash y mantienen su propia licencia. Ver [LICENSE](LICENSE).
+MIT for the code. Photos in `public/vehicles` are from Unsplash and keep their own license. See [LICENSE](LICENSE).

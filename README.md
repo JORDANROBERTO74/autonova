@@ -107,7 +107,8 @@ docs/screenshot.webp       captura usada en este README
 
 ## Estado y alcance
 
-- Implementación de portafolio, funcional en front-end; no lista para producción.
+- Pieza de portafolio; sin releases ni CI. Última verificación: noviembre 2026.
+- Implementación funcional en front-end; no lista para producción.
 - Datos y precios ficticios.
 - Sin backend, pagos, email, inventario real ni uploads: las imágenes se agregan por URL.
 - El panel es local por navegador; no hay cuentas multiusuario ni datos compartidos.
@@ -118,7 +119,7 @@ docs/screenshot.webp       captura usada en este README
 - `pnpm test` ✅ (13 tests)
 - `pnpm build` ✅
 - Instalación limpia desde el clon: `pnpm install --frozen-lockfile` + `pnpm build` ✅
-- Probado en Node 24.3 y pnpm 11.17.
+- Probado en Node 24.3 y pnpm 11.17. Última verificación manual: noviembre 2026.
 
 ## Licencia
 

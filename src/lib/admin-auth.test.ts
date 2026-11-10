@@ -13,7 +13,7 @@ const credentials = {
 };
 
 describe("isValidCredentials", () => {
-  it("normaliza el correo y exige la contraseña exacta", () => {
+  it("normalizes the email and requires the exact password", () => {
     expect(
       isValidCredentials(" Admin@AutoNova.mx ", "autonova2026", credentials),
     ).toBe(true);
@@ -23,8 +23,8 @@ describe("isValidCredentials", () => {
   });
 });
 
-describe("sesión de admin", () => {
-  it("crea una sesión de 8 horas", () => {
+describe("admin session", () => {
+  it("creates an 8-hour session", () => {
     const now = 1_700_000_000_000;
     const session = createSession(" Admin@AutoNova.mx ", now);
 

@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 import path from "path";
 
 const nextConfig: NextConfig = {
-  // Evita que un package-lock.json en un directorio padre (p. ej. GitHub/) se tome como raíz del workspace.
+  // Prevent a parent package-lock.json (e.g. GitHub/) from being treated as the workspace root.
   outputFileTracingRoot: path.join(__dirname),
 };
 

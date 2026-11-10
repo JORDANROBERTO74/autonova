@@ -7,7 +7,7 @@
     "node": ">=20",
     "pnpm": ">=11"
   },
-  "description": "Plataforma automotriz con catálogo, detalle de modelos y panel de administración con datos locales.",
+  "description": "Automotive catalog with vehicle detail pages and an admin panel backed by local browser data.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

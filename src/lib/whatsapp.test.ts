@@ -3,11 +3,11 @@ import { describe, expect, it } from "vitest";
 import { quoteMessage, whatsappUrl } from "./whatsapp";
 
 describe("quoteMessage", () => {
-  it("arma el mensaje base sin opciones", () => {
+  it("builds the base message without options", () => {
     expect(quoteMessage("Kestrel 400")).toBe("Hola, quiero cotizar Kestrel 400.");
   });
 
-  it("agrega variante y color cuando existen", () => {
+  it("adds variant and color when present", () => {
     expect(
       quoteMessage("Kestrel 400", { variant: "Sport", color: "Negro Ónix" }),
     ).toBe("Hola, quiero cotizar Kestrel 400 (Sport, Negro Ónix).");
@@ -15,7 +15,7 @@ describe("quoteMessage", () => {
 });
 
 describe("whatsappUrl", () => {
-  it("normaliza el número y codifica el mensaje", () => {
+  it("normalizes the number and encodes the message", () => {
     process.env.NEXT_PUBLIC_WHATSAPP_NUMBER = "+52 81 1234 5678";
     const url = whatsappUrl(quoteMessage("Kestrel 400"));
 

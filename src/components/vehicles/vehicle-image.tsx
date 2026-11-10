@@ -14,7 +14,7 @@ type VehicleImageProps = {
   sizes?: string;
 };
 
-// shortcut: solo las fotos del catálogo tienen variantes 400/800/1200; una URL local nueva usa el original completo.
+// shortcut: only catalog photos have 400/800/1200 variants; a new local URL uses the full original.
 const responsiveImages = new Set([
   "q7",
   "rav4",

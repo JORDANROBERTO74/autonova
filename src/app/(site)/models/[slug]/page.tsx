@@ -30,7 +30,7 @@ export async function generateMetadata({
 
   return {
     title: vehicle.name,
-    description: `${vehicle.name} ${vehicle.category} desde ${formatPrice(vehicle.price)}. ${vehicle.specs.motor}, ${vehicle.specs.potencia}, ${vehicle.specs.transmision}. Cotiza por WhatsApp.`,
+    description: `${vehicle.name} ${vehicle.category} desde ${formatPrice(vehicle.price)}. ${vehicle.specs.engine}, ${vehicle.specs.power}, ${vehicle.specs.transmission}. Cotiza por WhatsApp.`,
   };
 }
 

@@ -9,9 +9,9 @@ import { quoteMessage } from "@/lib/whatsapp";
 
 export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
   const quickSpecs = [
-    ["Motor", vehicle.specs.motor],
-    ["Potencia", vehicle.specs.potencia],
-    ["Transmisión", vehicle.specs.transmision],
+    ["Motor", vehicle.specs.engine],
+    ["Potencia", vehicle.specs.power],
+    ["Transmisión", vehicle.specs.transmission],
   ];
 
   return (

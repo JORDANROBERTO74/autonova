@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   categoryCounts,
+  normalizeVehicle,
   specRows,
   vehicleGallery,
   vehicleSchema,
@@ -15,10 +16,10 @@ const validInput = {
   price: 689900,
   image_url: "/vehicles/q7.jpg",
   specs: {
-    motor: "2.0 L turbo",
-    potencia: "245 hp",
-    transmision: "Automática 8 vel.",
-    traccion: "AWD",
+    engine: "2.0 L turbo",
+    power: "245 hp",
+    transmission: "Automática 8 vel.",
+    drivetrain: "AWD",
     gallery: ["/vehicles/rav4.jpg"],
     colors: [{ name: "Negro Ónix", hex: "#0D0E10" }],
   },
@@ -32,20 +33,20 @@ const kestrel: Vehicle = {
   price: 689900,
   image_url: "/vehicles/q7.jpg",
   specs: {
-    motor: "2.0 L turbo",
-    potencia: "245 hp",
-    transmision: "Automática 8 vel.",
-    traccion: "AWD",
+    engine: "2.0 L turbo",
+    power: "245 hp",
+    transmission: "Automática 8 vel.",
+    drivetrain: "AWD",
     gallery: ["/vehicles/rav4.jpg"],
   },
 };
 
 describe("vehicleSchema", () => {
-  it("acepta un vehículo válido", () => {
+  it("accepts a valid vehicle", () => {
     expect(vehicleSchema.safeParse(validInput).success).toBe(true);
   });
 
-  it("rechaza precio vacío y imágenes inválidas", () => {
+  it("rejects an empty price and invalid images", () => {
     expect(vehicleSchema.safeParse({ ...validInput, price: "" }).success).toBe(false);
     expect(vehicleSchema.safeParse({ ...validInput, image_url: "/" }).success).toBe(false);
     expect(
@@ -58,15 +59,15 @@ describe("vehicleSchema", () => {
 });
 
 describe("specRows", () => {
-  it("omite especificaciones opcionales ausentes", () => {
+  it("omits missing optional specs", () => {
     expect(specRows(kestrel.specs)).toHaveLength(4);
   });
 
-  it("incluye las opcionales presentes", () => {
+  it("includes optional specs when present", () => {
     const rows = specRows({
       ...kestrel.specs,
-      combustible: "Gasolina",
-      plazas: 5,
+      fuel: "Gasolina",
+      seats: 5,
     });
 
     expect(rows).toContainEqual({ label: "Combustible", value: "Gasolina" });
@@ -74,15 +75,15 @@ describe("specRows", () => {
   });
 });
 
-describe("helpers de catálogo", () => {
-  it("deduplica la galería e incluye la imagen principal", () => {
+describe("catalog helpers", () => {
+  it("deduplicates the gallery and includes the main image", () => {
     expect(vehicleGallery(kestrel)).toEqual([
       "/vehicles/q7.jpg",
       "/vehicles/rav4.jpg",
     ]);
   });
 
-  it("cuenta modelos por categoría", () => {
+  it("counts models by category", () => {
     const pickup: Vehicle = {
       ...kestrel,
       id: "ridge",
@@ -91,5 +92,30 @@ describe("helpers de catálogo", () => {
     };
 
     expect(categoryCounts([kestrel, pickup])).toEqual({ SUV: 1, Pickup: 1 });
+  });
+
+  it("migrates legacy Spanish spec keys", () => {
+    const legacy = {
+      ...kestrel,
+      specs: {
+        motor: "2.0 L",
+        potencia: "245 hp",
+        transmision: "Automática",
+        traccion: "AWD",
+        combustible: "Gasolina",
+        plazas: 5,
+        garantia: "5 años",
+      },
+    } as unknown as Vehicle;
+
+    expect(normalizeVehicle(legacy).specs).toMatchObject({
+      engine: "2.0 L",
+      power: "245 hp",
+      transmission: "Automática",
+      drivetrain: "AWD",
+      fuel: "Gasolina",
+      seats: 5,
+      warranty: "5 años",
+    });
   });
 });

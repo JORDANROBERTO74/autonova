@@ -84,7 +84,7 @@ export function saveAdminSession(session: AdminSession) {
   try {
     window.localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(session));
   } catch {
-    // Sin persistencia disponible; la sesión vive en memoria hasta recargar.
+    // No persistence available; the session lives in memory until reload.
   }
 }
 
@@ -92,6 +92,6 @@ export function clearAdminSession() {
   try {
     window.localStorage.removeItem(ADMIN_SESSION_KEY);
   } catch {
-    // Nada que limpiar.
+    // Nothing to clean up.
   }
 }

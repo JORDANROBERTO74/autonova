@@ -33,14 +33,14 @@ type FormValues = {
   category: string;
   price: string;
   image_url: string;
-  motor: string;
-  potencia: string;
-  transmision: string;
-  traccion: string;
-  combustible: string;
+  engine: string;
+  power: string;
+  transmission: string;
+  drivetrain: string;
+  fuel: string;
   torque: string;
-  plazas: string;
-  garantia: string;
+  seats: string;
+  warranty: string;
   gallery: string;
   variants: string;
   colors: string;
@@ -54,28 +54,28 @@ const emptyValues: FormValues = {
   category: "SUV",
   price: "",
   image_url: "",
-  motor: "",
-  potencia: "",
-  transmision: "",
-  traccion: "",
-  combustible: "",
+  engine: "",
+  power: "",
+  transmission: "",
+  drivetrain: "",
+  fuel: "",
   torque: "",
-  plazas: "",
-  garantia: "",
+  seats: "",
+  warranty: "",
   gallery: "",
   variants: "",
   colors: "",
 };
 
 const specFields = [
-  { key: "motor", label: "Motor", placeholder: "2.0 L turbo" },
-  { key: "potencia", label: "Potencia", placeholder: "245 hp" },
-  { key: "transmision", label: "Transmisión", placeholder: "Automática 8 vel." },
-  { key: "traccion", label: "Tracción", placeholder: "AWD" },
-  { key: "combustible", label: "Combustible", placeholder: "Gasolina", optional: true },
+  { key: "engine", label: "Motor", placeholder: "2.0 L turbo" },
+  { key: "power", label: "Potencia", placeholder: "245 hp" },
+  { key: "transmission", label: "Transmisión", placeholder: "Automática 8 vel." },
+  { key: "drivetrain", label: "Tracción", placeholder: "AWD" },
+  { key: "fuel", label: "Combustible", placeholder: "Gasolina", optional: true },
   { key: "torque", label: "Torque", placeholder: "370 Nm", optional: true },
-  { key: "plazas", label: "Plazas", placeholder: "5", type: "number", optional: true },
-  { key: "garantia", label: "Garantía", placeholder: "5 años o 100,000 km", optional: true },
+  { key: "seats", label: "Plazas", placeholder: "5", type: "number", optional: true },
+  { key: "warranty", label: "Garantía", placeholder: "5 años o 100,000 km", optional: true },
 ] as const;
 
 function linesToArray(text: string): string[] {
@@ -109,14 +109,14 @@ function valuesFromVehicle(vehicle: Vehicle): FormValues {
     category: vehicle.category,
     price: String(vehicle.price),
     image_url: vehicle.image_url,
-    motor: vehicle.specs.motor,
-    potencia: vehicle.specs.potencia,
-    transmision: vehicle.specs.transmision,
-    traccion: vehicle.specs.traccion,
-    combustible: vehicle.specs.combustible ?? "",
+    engine: vehicle.specs.engine,
+    power: vehicle.specs.power,
+    transmission: vehicle.specs.transmission,
+    drivetrain: vehicle.specs.drivetrain,
+    fuel: vehicle.specs.fuel ?? "",
     torque: vehicle.specs.torque ?? "",
-    plazas: vehicle.specs.plazas ? String(vehicle.specs.plazas) : "",
-    garantia: vehicle.specs.garantia ?? "",
+    seats: vehicle.specs.seats ? String(vehicle.specs.seats) : "",
+    warranty: vehicle.specs.warranty ?? "",
     gallery: (vehicle.specs.gallery ?? []).join("\n"),
     variants: (vehicle.specs.variants ?? []).join("\n"),
     colors: (vehicle.specs.colors ?? [])
@@ -244,14 +244,14 @@ function VehicleFormFields({ vehicle }: { vehicle?: Vehicle }) {
       price: values.price.trim() === "" ? undefined : Number(values.price),
       image_url: values.image_url,
       specs: {
-        motor: values.motor,
-        potencia: values.potencia,
-        transmision: values.transmision,
-        traccion: values.traccion,
-        combustible: values.combustible || undefined,
+        engine: values.engine,
+        power: values.power,
+        transmission: values.transmission,
+        drivetrain: values.drivetrain,
+        fuel: values.fuel || undefined,
         torque: values.torque || undefined,
-        plazas: values.plazas ? Number(values.plazas) : undefined,
-        garantia: values.garantia || undefined,
+        seats: values.seats ? Number(values.seats) : undefined,
+        warranty: values.warranty || undefined,
         gallery: linesToArray(values.gallery),
         variants: linesToArray(values.variants),
         colors: parsedColors.colors,
@@ -443,7 +443,7 @@ function VehicleFormFields({ vehicle }: { vehicle?: Vehicle }) {
                     id={field.key}
                     name={field.key}
                     type={"type" in field ? field.type : "text"}
-                    min={field.key === "plazas" ? 1 : undefined}
+                    min={field.key === "seats" ? 1 : undefined}
                     value={values[field.key]}
                     onChange={(event) => updateField(field.key, event.target.value)}
                     placeholder={field.placeholder}

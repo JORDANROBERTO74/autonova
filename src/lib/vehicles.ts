@@ -16,14 +16,14 @@ export type VehicleColor = {
 };
 
 export type VehicleSpecs = {
-  motor: string;
-  potencia: string;
-  transmision: string;
-  traccion: string;
-  combustible?: string;
+  engine: string;
+  power: string;
+  transmission: string;
+  drivetrain: string;
+  fuel?: string;
   torque?: string;
-  plazas?: number;
-  garantia?: string;
+  seats?: number;
+  warranty?: string;
   gallery?: string[];
   variants?: string[];
   colors?: VehicleColor[];
@@ -38,6 +38,46 @@ export type Vehicle = {
   image_url: string;
   specs: VehicleSpecs;
 };
+
+type LegacySpecs = Partial<VehicleSpecs> & {
+  motor?: unknown;
+  potencia?: unknown;
+  transmision?: unknown;
+  traccion?: unknown;
+  combustible?: unknown;
+  plazas?: unknown;
+  garantia?: unknown;
+};
+
+function asString(value: unknown): string | undefined {
+  return typeof value === "string" && value.trim() ? value : undefined;
+}
+
+function asNumber(value: unknown): number | undefined {
+  return typeof value === "number" && Number.isFinite(value) ? value : undefined;
+}
+
+export function normalizeVehicle(vehicle: Vehicle): Vehicle {
+  const specs = vehicle.specs as LegacySpecs;
+
+  return {
+    ...vehicle,
+    specs: {
+      engine: specs.engine ?? asString(specs.motor) ?? "",
+      power: specs.power ?? asString(specs.potencia) ?? "",
+      transmission:
+        specs.transmission ?? asString(specs.transmision) ?? "",
+      drivetrain: specs.drivetrain ?? asString(specs.traccion) ?? "",
+      fuel: specs.fuel ?? asString(specs.combustible),
+      torque: specs.torque,
+      seats: specs.seats ?? asNumber(specs.plazas),
+      warranty: specs.warranty ?? asString(specs.garantia),
+      gallery: specs.gallery,
+      variants: specs.variants,
+      colors: specs.colors,
+    },
+  };
+}
 
 const colorSchema = z.object({
   name: z.string().trim().min(1, "Escribe el nombre del color"),
@@ -72,14 +112,14 @@ export const vehicleSchema = z.object({
     .min(1, "Agrega la imagen principal")
     .refine(imageSource, "Usa una ruta (/vehicles/...) o una URL http(s)"),
   specs: z.object({
-    motor: z.string().trim().min(1, "Escribe el motor"),
-    potencia: z.string().trim().min(1, "Escribe la potencia"),
-    transmision: z.string().trim().min(1, "Escribe la transmisión"),
-    traccion: z.string().trim().min(1, "Escribe la tracción"),
-    combustible: z.string().trim().optional(),
+    engine: z.string().trim().min(1, "Escribe el engine"),
+    power: z.string().trim().min(1, "Escribe la power"),
+    transmission: z.string().trim().min(1, "Escribe la transmisión"),
+    drivetrain: z.string().trim().min(1, "Escribe la tracción"),
+    fuel: z.string().trim().optional(),
     torque: z.string().trim().optional(),
-    plazas: z.coerce.number().int().min(1).max(12).optional(),
-    garantia: z.string().trim().optional(),
+    seats: z.coerce.number().int().min(1).max(12).optional(),
+    warranty: z.string().trim().optional(),
     gallery: z
       .array(
         z
@@ -98,14 +138,14 @@ export type VehicleInput = z.infer<typeof vehicleSchema>;
 
 export function specRows(specs: VehicleSpecs): { label: string; value: string }[] {
   const rows: Array<[string, string | number | undefined]> = [
-    ["Motor", specs.motor],
-    ["Potencia", specs.potencia],
-    ["Transmisión", specs.transmision],
-    ["Tracción", specs.traccion],
-    ["Combustible", specs.combustible],
+    ["Motor", specs.engine],
+    ["Potencia", specs.power],
+    ["Transmisión", specs.transmission],
+    ["Tracción", specs.drivetrain],
+    ["Combustible", specs.fuel],
     ["Torque", specs.torque],
-    ["Plazas", specs.plazas],
-    ["Garantía", specs.garantia],
+    ["Plazas", specs.seats],
+    ["Garantía", specs.warranty],
   ];
 
   return rows

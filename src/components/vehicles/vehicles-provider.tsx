@@ -10,7 +10,12 @@ import {
 } from "react";
 
 import { seedVehicles } from "@/lib/mock/vehicles";
-import { VEHICLE_CATEGORIES, type Vehicle, type VehicleInput } from "@/lib/vehicles";
+import {
+  VEHICLE_CATEGORIES,
+  normalizeVehicle,
+  type Vehicle,
+  type VehicleInput,
+} from "@/lib/vehicles";
 
 const STORAGE_KEY = "autonova.vehicles.v1";
 
@@ -56,12 +61,12 @@ export function VehiclesProvider({ children }: { children: React.ReactNode }) {
       if (raw) {
         const parsed: unknown = JSON.parse(raw);
         if (Array.isArray(parsed)) {
-          const valid = parsed.filter(isVehicle);
+          const valid = parsed.filter(isVehicle).map(normalizeVehicle);
           if (parsed.length === 0 || valid.length > 0) setVehicles(valid);
         }
       }
     } catch {
-      // localStorage puede estar bloqueado; seguimos con el seed.
+      // localStorage may be blocked; continue with the seed.
     } finally {
       setHydrated(true);
     }
@@ -72,7 +77,7 @@ export function VehiclesProvider({ children }: { children: React.ReactNode }) {
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(vehicles));
     } catch {
-      // Sin persistencia disponible; la app sigue funcionando en memoria.
+      // No persistence available; the app keeps working in memory.
     }
   }, [vehicles, hydrated]);
 
@@ -84,10 +89,10 @@ export function VehiclesProvider({ children }: { children: React.ReactNode }) {
         const parsed: unknown = JSON.parse(event.newValue);
         if (!Array.isArray(parsed)) return;
 
-        const valid = parsed.filter(isVehicle);
+        const valid = parsed.filter(isVehicle).map(normalizeVehicle);
         if (parsed.length === 0 || valid.length > 0) setVehicles(valid);
       } catch {
-        // Ignoramos datos externos corruptos.
+        // Ignore corrupted external data.
       }
     };
 
@@ -142,7 +147,7 @@ export function VehiclesProvider({ children }: { children: React.ReactNode }) {
     try {
       window.localStorage.removeItem(STORAGE_KEY);
     } catch {
-      // Nada que limpiar.
+      // Nothing to clean up.
     }
   }, []);
 

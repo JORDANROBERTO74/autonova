@@ -209,9 +209,9 @@ export function VehicleDetail({ slug }: { slug: string }) {
         <div className="lg:col-start-1 lg:row-start-2 lg:mt-14">
           <div className="flex items-end justify-between gap-4">
             <h2 className="display-title text-3xl">Ficha técnica</h2>
-            {vehicle.specs.plazas ? (
+            {vehicle.specs.seats ? (
               <span className="font-mono text-[11px] uppercase tracking-label text-steel">
-                {vehicle.specs.plazas} plazas
+                {vehicle.specs.seats} plazas
               </span>
             ) : null}
           </div>

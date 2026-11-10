@@ -139,8 +139,8 @@ export function VehiclesAdmin() {
                   </TableCell>
                   <TableCell className="hidden lg:table-cell">
                     <span className="text-xs text-steel">
-                      {vehicle.specs.motor} · {vehicle.specs.potencia} ·{" "}
-                      {vehicle.specs.transmision}
+                      {vehicle.specs.engine} · {vehicle.specs.power} ·{" "}
+                      {vehicle.specs.transmission}
                     </span>
                   </TableCell>
                   <TableCell>

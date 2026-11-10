@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@11.17.0",
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=11"
+  },
   "description": "Plataforma automotriz con catálogo, detalle de modelos y panel de administración con datos locales.",
   "scripts": {
     "dev": "next dev",
